@@ -1,1 +1,3 @@
 *.POMDP
+__pycache__
+*.pyc
