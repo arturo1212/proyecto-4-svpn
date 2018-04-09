@@ -1,6 +1,6 @@
 
 # FILENAME: 4x3_mazecase12
-#CASE:
+#CASE: (0, white) ; (# , Wall) ; (+ , reward) ; (-, penalty)
 #  #########
 #  ## 0 # -#
 #  #0 0 + 0#

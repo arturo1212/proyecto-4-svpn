@@ -165,7 +165,7 @@ def translate_pomdp(filename, case):
 	f = open("POMDP/" + filename+".POMDP", 'w')
 	Header = """
 # FILENAME: %s
-#CASE:
+#CASE: (0, white) ; (# , Wall) ; (+ , reward) ; (-, penalty)
 %s
 discount: %f
 values: reward
