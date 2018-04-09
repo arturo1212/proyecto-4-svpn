@@ -44,27 +44,46 @@ def solve_case(case):
 	transitions = {"n":[], "s":[], "w":[], "e":[]}
 	# ------------------- Crear transiciones ------------------------- #
 	# 						 (n, s, e, w)	
-	for key, matrix in transitions.items(): #
-		print("KEY: ", key)
+	for key, matrix in transitions.items(): # Crear transiciones para cada movimiento
 		# FALTA CASO DE LOS ABSORBS
-		for i in range(0, case.height):
-			for j in range(0, case.width):
-				# Casos ESPECIALES
-				if(is_obstacle(case.matrix[i][j])):	# No calcular para los obstaculos
+		print("KEY: " + key)
+		for i in range(0, case.height):		# Crear transiciones para cada estado valido
+			for j in range(0, case.width):	
+				if(is_obstacle(case.matrix[i][j])):								# No calcular para los obstaculos
 					continue
-				if(is_good(case.matrix[i][j]) or is_bad(case.matrix[i][j])):
+				if(is_good(case.matrix[i][j]) or is_bad(case.matrix[i][j])):	# Absorciones
 					# Caso de restart
 					continue
 
 				aux_matrix = case.matrix.copy()
 				aux_matrix[:][aux_matrix[:]<10] = 0
-				if(key == 'n'): # Arriba 0.8, A los lados  0.10
-					# Casos de paredes (Intencion y perpendiculares)
+
+				# MOVIMIENTO NORMAL
+				if(key == 'n'): 	# Arriba 0.8, A los lados  0.10
+					# Casos de paredes (INTENCION)
 					if(i-1 < 0 or aux_matrix[i-1][j] > 1):			# Intencion
 						aux_matrix[i][j] += 0.8
 					else:
 						aux_matrix[i-1][j] += 0.8
+				elif(key == "s"): 	# Abajo 0.8 , A los lados  0.10
+					# Casos de paredes (Intencion y perpendiculares)
+					if(i+1 >= case.height or aux_matrix[i+1][j] > 1):			# Intencion
+						aux_matrix[i][j] += 0.8
+					else:
+						aux_matrix[i+1][j] += 0.8
+				elif(key == "w"): 	# Izqui 0.8 , Arriba/Abajo 0.10
+					if(j-1 < 0 or aux_matrix[i][j-1] > 1):
+						aux_matrix[i][j] += 0.8
+					else:
+						aux_matrix[i][j-1] += 0.8
+				elif(key == "e"): 	# Derec 0.8 , Arriba/Abajo 0.10
+					if(j+1 >= case.width or aux_matrix[i][j+1] > 1):
+						aux_matrix[i][j] += 0.8
+					else:
+						aux_matrix[i][j+1] += 0.8
 
+				# MOVIMIENTO PERPENDICULAR
+				if(key == 'n' or key == 's'):				# PERPENDICULARES horizontales
 					if(j-1 < 0 or aux_matrix[i][j-1] > 1):			# Pared lateral
 						aux_matrix[i][j] += 0.1
 					else:
@@ -73,14 +92,20 @@ def solve_case(case):
 						aux_matrix[i][j] += 0.1
 					else:
 						aux_matrix[i][j+1] += 0.1
+				elif(key == 'w' or key == 'e'):				# PERPENDICULARES verticales
+					if(i-1 < 0 or aux_matrix[i-1][j] > 1):
+						aux_matrix[i][j] += 0.1
+					else:
+						aux_matrix[i-1][j] += 0.1
+					if(i+1 >= case.height or aux_matrix[i+1][j] > 1):
+						aux_matrix[i][j] += 0.1
+					else:
+						aux_matrix[i+1][j] += 0.1
+
 				line = aux_matrix.ravel()
 				line = [e for e in line if e <= 1]
 				transitions[key].append(line)
 				print(line)
-		#if(key == "s"): # Abajo 0.8 , A los lados  0.10
-		#if(key == "w"): # Izqui 0.8 , Arriba/Abajo 0.10
-
-#		if(key == "e"): # Derec 0.8 , Arriba/Abajo 0.10
 			
 	# ------------------- Crear observaciones ------------------------ #
 	#            (left, right, neither, both, good, bad)			   #
@@ -111,14 +136,14 @@ def solve_case(case):
 				rewards.append(-1)
 			elif(value == 0):
 				rewards.append(-0.04)
-	return rewards, observs
+	return rewards, observs, transitions
 
 
 test_files = directory_files("test/Russel-maze") # Extraer los archivos del directorio test
 file_cases = create_file_cases("test/Russel-maze/" + test_files[0] + ".cases")
 # FALTA: CREAR ARCHIVO POMDP Y Guardar .pomdp en directorio POMDP
 for case in file_cases:
-	rewards, observs = solve_case(case)	# EN PROCESO: TRANSICIONES
+	rewards, observs, transitions = solve_case(case)	# EN PROCESO: TRANSICIONES
 	print("#############")
 	#print(case.matrix)
 	#print(observs)
