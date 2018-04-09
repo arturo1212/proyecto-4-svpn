@@ -157,20 +157,21 @@ def print_maze(case):
 		result += "#  #" + string   + '#\n'
 	result+= "#  "+ "#"*case.width*2+"#\n"
 	return result
+
 def translate_pomdp(filename, case):
 	obstacles = np.count_nonzero(case.matrix == 10) # Contar peroles
-	discount, total_states =0.95, case.width*case.height - (obstacles + 2)
+	discount, total_states =0.95, case.width*case.height - obstacles
 	rewards, observs, transitions = solve_case(case)
 	str_rewards, str_observations, str_trans = "", "O: *\n", ""
 	f = open("POMDP/" + filename+".POMDP", 'w')
-	Header = """
+	Header = """########################################
 # FILENAME: %s
 #CASE: (0, white) ; (# , Wall) ; (+ , reward) ; (-, penalty)
 %s
 discount: %f
 values: reward
 states: %d
-actions: n s e w
+actions: s e w n
 observations: left right neither both good bad
 \n""" % (filename,print_maze(case), discount, total_states)
 
