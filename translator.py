@@ -147,6 +147,16 @@ def solve_case(case):
 				rewards.append(-0.04)
 	return rewards, observs, transitions
 
+def print_maze(case):
+	result = "#  "+ "#"*case.width*2+"#\n"
+	for line in case.matrix:
+		string = " ".join(str(int(e)) for e in line)
+		string = string.replace("10","#")
+		string = string.replace("5", "-")
+		string = string.replace("1", "+")
+		result += "#  #" + string   + '#\n'
+	result+= "#  "+ "#"*case.width*2+"#\n"
+	return result
 def translate_pomdp(filename, case):
 	obstacles = np.count_nonzero(case.matrix == 10) # Contar peroles
 	discount, total_states =0.95, case.width*case.height - (obstacles + 2)
@@ -155,12 +165,14 @@ def translate_pomdp(filename, case):
 	f = open("POMDP/" + filename+".POMDP", 'w')
 	Header = """
 # FILENAME: %s
+#CASE:
+%s
 discount: %f
 values: reward
 states: %d
 actions: n s e w
 observations: left right neither both good bad
-\n""" % (filename, discount, total_states)
+\n""" % (filename,print_maze(case), discount, total_states)
 
 	for key, value in transitions.items():
 		str_trans+= "T: %s \n" % (key)
@@ -184,7 +196,7 @@ for file in test_files:
 	# FALTA: CREAR ARCHIVO POMDP Y Guardar .pomdp en directorio POMDP
 	count = 1
 	for case in file_cases:
-		print("###############")
 		translate_pomdp(file+"case"+str(count), case)	# EN PROCESO: TRANSICIONES
+		print_maze(case)
 		count+= 1
 	#print(len(file_cases))

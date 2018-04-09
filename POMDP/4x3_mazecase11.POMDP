@@ -1,5 +1,12 @@
 
 # FILENAME: 4x3_mazecase11
+#CASE:
+#  #########
+#  #0 0 0 0#
+#  ## 0 # 0#
+#  #- 0 + 0#
+#  #########
+
 discount: 0.950000
 values: reward
 states: 8
