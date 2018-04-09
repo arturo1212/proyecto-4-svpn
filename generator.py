@@ -60,7 +60,7 @@ def create_test_file(width, height, cases):
 	f = open(file_name, 'w')
 	f.write(result)
 
-#width, height = 4, 3
-#cases = create_cases(width, height, 2, 20)
-#create_test_file(width, height, cases)
+width, height = 20, 10
+cases = create_cases(width, height, 7, 20)
+create_test_file(width, height, cases)
 #imshow((1-np.array(data.vector)).reshape(data.height, data.width))
