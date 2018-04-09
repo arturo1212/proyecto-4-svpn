@@ -38,6 +38,16 @@ def is_good(pos):
 def is_bad(pos):
 	return pos == 5
 
+def create_start(case):
+	obstacles = np.count_nonzero(case.matrix == 10) # Contar peroles
+	total_states = case.width*case.height - (obstacles + 2)
+	value = 1.0/total_states 
+
+	line = case.matrix.ravel()
+	line = [e for e in line if e < 7]	# Quitar los obstaculos
+	line = [value if e!=5 and e!=1 else 0.0 for e in line]
+	return line # FALTA CASO EN EL QUE LA DIVISION NO DA EXACTA	
+
 def solve_case(case):
 	observs = []
 	rewards = []
@@ -46,13 +56,12 @@ def solve_case(case):
 	# 						 (n, s, e, w)	
 	for key, matrix in transitions.items(): # Crear transiciones para cada movimiento
 		# FALTA CASO DE LOS ABSORBS
-		print("KEY: " + key)
 		for i in range(0, case.height):		# Crear transiciones para cada estado valido
 			for j in range(0, case.width):	
 				if(is_obstacle(case.matrix[i][j])):								# No calcular para los obstaculos
 					continue
 				if(is_good(case.matrix[i][j]) or is_bad(case.matrix[i][j])):	# Absorciones
-					# Caso de restart
+					transitions[key].append(create_start(case))# Caso de restart
 					continue
 
 				aux_matrix = case.matrix.copy()
@@ -105,7 +114,7 @@ def solve_case(case):
 				line = aux_matrix.ravel()
 				line = [e for e in line if e <= 1]
 				transitions[key].append(line)
-				print(line)
+				#print(line)
 			
 	# ------------------- Crear observaciones ------------------------ #
 	#            (left, right, neither, both, good, bad)			   #
@@ -138,13 +147,44 @@ def solve_case(case):
 				rewards.append(-0.04)
 	return rewards, observs, transitions
 
+def translate_pomdp(filename, case):
+	obstacles = np.count_nonzero(case.matrix == 10) # Contar peroles
+	discount, total_states =0.95, case.width*case.height - (obstacles + 2)
+	rewards, observs, transitions = solve_case(case)
+	str_rewards, str_observations, str_trans = "", "O: *\n", ""
+	f = open("POMDP/" + filename+".POMDP", 'w')
+	Header = """
+# FILENAME: %s
+discount: %f
+values: reward
+states: %d
+actions: n s e w
+observations: left right neither both good bad
+\n""" % (filename, discount, total_states)
+
+	for key, value in transitions.items():
+		str_trans+= "T: %s \n" % (key)
+		for line in value:
+			#aux = line.tolist()
+			aux = " ".join(str(e) for e in line)
+			str_trans += aux + "\n"
+		str_trans+= "\n"
+
+	for i in range(0,total_states):
+		str_observations += observs[i] + "\n"
+		str_rewards += "R: * : %d : * : * %f\n" % (0, rewards[i])
+	result = Header + str_trans + str_observations + "\n" + str_rewards
+	f.write(result)
+	print(result)
+	f.close()
 
 test_files = directory_files("test/Russel-maze") # Extraer los archivos del directorio test
-file_cases = create_file_cases("test/Russel-maze/" + test_files[0] + ".cases")
-# FALTA: CREAR ARCHIVO POMDP Y Guardar .pomdp en directorio POMDP
-for case in file_cases:
-	rewards, observs, transitions = solve_case(case)	# EN PROCESO: TRANSICIONES
-	print("#############")
-	#print(case.matrix)
-	#print(observs)
-print(len(file_cases))
+for file in test_files:
+	file_cases = create_file_cases("test/Russel-maze/" + file + ".cases")
+	# FALTA: CREAR ARCHIVO POMDP Y Guardar .pomdp en directorio POMDP
+	count = 1
+	for case in file_cases:
+		print("###############")
+		translate_pomdp(file+"case"+str(count), case)	# EN PROCESO: TRANSICIONES
+		count+= 1
+	#print(len(file_cases))
