@@ -163,7 +163,7 @@ def translate_pomdp(filename, case):
 	rewards, observs, transitions = solve_case(case)
 	str_rewards, str_observations, str_trans = "", "O: *\n", ""
 	f = open("POMDP/" + filename+".POMDP", 'w')
-	Header = """
+	Header = """########################################
 # FILENAME: %s
 #CASE: (0, white) ; (# , Wall) ; (+ , reward) ; (-, penalty)
 %s
