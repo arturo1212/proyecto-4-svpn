@@ -1,0 +1,60 @@
+%boot setupTime 0.002835
+%boot computeHeuristicTime 0.000080
+%call problem "POMDP/1x3_mazecase2.POMDP"
+%call pddlProblem false
+%call software-revision 2.00
+%call version original (fixed)
+%call epsilon 0.000001
+%call pims [8,2000,500]
+%call cutoff 250
+%call qmdp-discount 1.000000
+%call heuristic-lookahead 0
+%call zero-heuristic off
+%call hash-all off
+%call random-ties off
+%call random-seed 0
+%call verbose-level 0
+%call precision 6
+%call output-level 0
+%call max-update off
+%call stoprule off
+%call epsilon-greedy 0.000000
+%call control-updates off
+%call sondik off
+%call sondik-method timestamps
+%call sondik-max-planes 16
+%call sondik-iterations 100
+%call qmethod plain
+%call qlevels 15.000000
+%call qbase 0.950000
+%learningStats learningTime 0.207571 initialValue -0.773333 hashRatio 46.153769
+%controlStats  learningTime 0.207571 initialValue -0.773333 rewardAvg -0.799678 confInterval 0.073960 hashRatio 41.666667
+%learningStats learningTime 0.414258 initialValue -0.773333 hashRatio 46.153846
+%controlStats  learningTime 0.414258 initialValue -0.773333 rewardAvg -0.718718 confInterval 0.072583 hashRatio 41.666667
+%learningStats learningTime 0.632984 initialValue -0.773333 hashRatio 46.153846
+%controlStats  learningTime 0.632984 initialValue -0.773333 rewardAvg -0.785118 confInterval 0.072106 hashRatio 41.666667
+%learningStats learningTime 0.834407 initialValue -0.773333 hashRatio 46.153846
+%controlStats  learningTime 0.834407 initialValue -0.773333 rewardAvg -0.780638 confInterval 0.072757 hashRatio 41.666667
+%learningStats learningTime 1.057575 initialValue -0.773333 hashRatio 46.153846
+%controlStats  learningTime 1.057575 initialValue -0.773333 rewardAvg -0.782878 confInterval 0.072433 hashRatio 41.666667
+%learningStats learningTime 1.279096 initialValue -0.773333 hashRatio 46.153846
+%controlStats  learningTime 1.279096 initialValue -0.773333 rewardAvg -0.799038 confInterval 0.072165 hashRatio 41.666667
+%learningStats learningTime 1.496712 initialValue -0.773333 hashRatio 46.153846
+%controlStats  learningTime 1.496712 initialValue -0.773333 rewardAvg -0.751198 confInterval 0.072029 hashRatio 41.666667
+%learningStats learningTime 1.701139 initialValue -0.773333 hashRatio 46.153846
+%controlStats  learningTime 1.701139 initialValue -0.773333 rewardAvg -0.790238 confInterval 0.073260 hashRatio 41.666667
+%pomdp initialBeliefValue 40.773333
+%pomdp expansions 5000000
+%pomdp learningTime 1.701139
+%pomdp controlTime 0.534264
+%hash size 1048576
+%hash numEntries 2
+%hash freeSlots 1048574
+%hash diameter 1
+%hash avgLength 1.000000
+%hash nlookups 3002
+%hash nfound 1252
+%cache emptyBuckets 0
+%cache emptySlots 2
+%cache hitRatio 1.000000
+%time 2.300195
