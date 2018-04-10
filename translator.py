@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
 import scipy.misc
-import generator
+#import generator
 
 def directory_files(mypath):
 	onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
