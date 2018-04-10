@@ -1,6 +1,6 @@
 # proyecto-4-svpn
 POMDP
-Se desea construir un programa que, dada una instancia del tablero de Russel,
+Se desea construir un programa que, dada una instancia del tablero de Russel-Norvig,
 genere un archivo en formato Cassandra que pueda ser utilizado por un solver de POMDP
 para hallar políticas que mejoren la utilidad del camino seleccionado.
 
@@ -26,6 +26,11 @@ Este solver utiliza el algoritmo de Iteración de valor y al realizar pruebas fu
 se incrementaba rápidamente al aumentar el tamaño del tablero, lo cual no ocurría con el solver proporcionado por el
 profesor Blai Bonet. Por esto, decidimos descartar el uso de "pomdp-solve"
 
+Adicional a los casos aleatorios generados, se decidió incorporar casos construidos a manos donde la complejidad
+del laberinto incrementara agregando los obstáculos de forma estructurada.
+
+DECIR CUALES CASOS 
+
 Todos los experimentos fueron realizados en un equipo con las siguientes especificaciones
 -- SPECS DE DAVID --
 
@@ -34,8 +39,8 @@ Los parámetros utilizados para la ejecución del solver fueron:
 
 ---------- INSERTAR PARÁMETROS AQUI ------------
 
-El solver devuelve mucha información útil, sin embargo, se hará énfasis en el resultado del Average Discounted Reward (ADR),
-pues representa la utilidad promedio del plan generado por el solver. En este sentido, a lo largo de las ejecuciones se puede notar que
+El solver devuelve mucha información útil, sin embargo, se hará énfasis en el resultado del Average Reward (AR),
+pues representa la utilidad promedio de la política generada por el solver. En este sentido, a lo largo de las ejecuciones se puede notar que
 la utilidad obtenida es negativa pero cercana a cero, lo cual tiene sentido debido a que existen dos estados sumideros con valores -1 y 1,
 mientras que el resto de los estados tienen un costo de -0.04.
 
