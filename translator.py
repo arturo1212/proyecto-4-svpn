@@ -185,7 +185,7 @@ observations: left right neither both good bad
 
 	for i in range(0,total_states):
 		str_observations += observs[i] + "\n"
-		str_rewards += "R: * : %d : * : * %f\n" % (0, rewards[i])
+		str_rewards += "R: * : %d : * : * %f\n" % (i, rewards[i])
 	result = Header + str_trans + str_observations + "\n" + str_rewards
 	f.write(result)
 	print(result)
