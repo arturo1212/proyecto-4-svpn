@@ -1,3 +1,4 @@
 *.POMDP
 __pycache__
 *.pyc
+*.output
