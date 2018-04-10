@@ -21,31 +21,53 @@ de casos para cada posible acción. En este sentido, los casos de las observacio
 rebote en una pared conlleva a la suma de la probabilidad del desplazamiento al estado inicial.
 
 ## Experimentos
-En primera instancia se decidió utilizar el solver "pomdp-solve" disponible en: http://www.pomdp.org/
-Este solver utiliza el algoritmo de Iteración de valor y al realizar pruebas fue posible notar que el tiempo de ejecución
-se incrementaba rápidamente al aumentar el tamaño del tablero, lo cual no ocurría con el solver proporcionado por el
-profesor Blai Bonet. Por esto, decidimos descartar el uso de "pomdp-solve"
+En primera instancia se pretendió utilizar el solver "pomdp-solve" disponible en: http://www.pomdp.org/
+Este solver utiliza el algoritmo de Iteración de valor. Sin embargo al realizar pruebas el tiempo de ejecución incrementaba 
+exponencialmoente al aumentar el tamaño del tablero. Por lo cual se decidió utilizar el solver proporcionado por el
+profesor Blai Bonet que utiliza el algoritmo RTDP-Bel, "gpt", el cual no presentó problema al tratar instancias más grandes. También se decidio usar este solver
+pues informaba sobre la utilidad de la politica final encontrada por el solver.
+
+Para todos los tableros existen dos estados sumideros con valores -1(bueno) y 1(malo),
+mientras que el resto de los estados tienen un costo de -0.04.
 
 Adicional a los casos aleatorios generados, se decidió incorporar casos construidos a manos donde la complejidad
-del laberinto incrementara agregando los obstáculos de forma estructurada.
+del laberinto incrementara agregando los obstáculos de forma estructurada. Creemos que al agregar más obstáculos
+se incrementa la cantidad de información "leible" por el agente lo que pudiera traducirse en un mayor reward. De 
+igual forma, los tableros que sean estructuralmente similares deberían tener un reward cercano o igual.
 
-DECIR CUALES CASOS 
+Tamanho de los laberintos:
 
-Todos los experimentos fueron realizados en un equipo con las siguientes especificaciones
--- SPECS DE DAVID --
+- 1x3
+- 4x3
+- 5x5
+- 10x20
+
+Todos los experimentos fueron realizados en una máquina con las siguientes especificaciones
+
+i7-7700HQ 16GB RAM
 
 ### Resultados
 Los parámetros utilizados para la ejecución del solver fueron:
 
----------- INSERTAR PARÁMETROS AQUI ------------
+  pims [8,2000,500]
 
-El solver devuelve mucha información útil, sin embargo, se hará énfasis en el resultado del Average Reward (AR),
-pues representa la utilidad promedio de la política generada por el solver. En este sentido, a lo largo de las ejecuciones se puede notar que
-la utilidad obtenida es negativa pero cercana a cero, lo cual tiene sentido debido a que existen dos estados sumideros con valores -1 y 1,
-mientras que el resto de los estados tienen un costo de -0.04.
+  Los demás parámetros son los que utiliza el solver por defecto 
 
-Esto indica que las políticas obtenidas buscan reducir el costo del plan para evitar sufrir penalizaciones altas.
-A continuación se presentan los resultados para las instancias seleccionadas:
+El solver devuelve mucha información útil, sin embargo, se hará énfasis en el resultado del Average Reward (rewardAvg),
+pues representa la utilidad promedio de la política generada por el solver. 
 
---- DATOS DE LAS INSTANCIAS ---
+En este sentido, a lo largo de las ejecuciones se puede notar que:
+
+* En los tableros donde encontrar el goal positivo se dificulta o imposibilita, el reward siempre es negativo.
+* En los tableros donde encontrar cualquiera de los dos goals se dificulta o se hace extenso, el reward es un número negativo muy pequeño.
+Esto tiene sentido pues todos los demás movimientos tienen valor -0.04 y el solver trata de minimizar la pérdida.
+* En los tableros grandes el reward suele ser negativo independientemente de la dificultad del laberinto pues
+se acumulan movimeintos de valor -0.04. **Se sugiere utilizar un esquema de valor de acorde al tamaño del tablero para medir el desempeño**
+* En tableros equivalentes (casos 3 y 4 de 1x3, casos 1 y 2 de 2x2) el reward es igual, como era esperado.
+* En la mayoria de os tableros estructurados se percibe un reward mayor que en aquellos generados aleatoriamente.
+Con la excepción del caso 4 de 10x20 donde, a pesar de que son estructurados, la naturaleza del laberinto 
+difuclta que una política encuentre el + en la mayoría de los casos para 4. Puede notarse que en el caso 5 de 10x20
+se tiene que el reward es similar al de los demás casos para ese tamaño de mapa donde el goal + es "facilmente" alcanzable
+
+NOTA: TODOS LOS MAPAS ESTAN DIBUJADOS EN LOS POMDP
 
