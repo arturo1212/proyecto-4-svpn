@@ -127,7 +127,7 @@ def solve_case(case):
 				observs.append("0.0 0.0 0.0 0.0 1.0 0.0")		# Estados finales
 			elif(is_bad(row[i])):						
 				observs.append("0.0 0.0 0.0 0.0 0.0 1.0")
-			elif(i-1 < 0 or is_obstacle(row[i-1]) and (i+1 >= case.width or is_obstacle(row[i+1]))):
+			elif (i-1 < 0 or is_obstacle(row[i-1])) and (i+1 >= case.width or is_obstacle(row[i+1])):
 				observs.append("0.0 0.0 0.0 1.0 0.0 0.0")# Pared a ambos lados
 			elif(i-1 < 0 or is_obstacle(row[i-1])):				# Caso ver a la izquierda
 				observs.append("1.0 0.0 0.0 0.0 0.0 0.0")	
@@ -188,7 +188,7 @@ observations: left right neither both good bad
 		str_rewards += "R: * : %d : * : * %f\n" % (i, rewards[i])
 	result = Header + str_trans + str_observations + "\n" + str_rewards
 	f.write(result)
-	print(result)
+	#print(result)
 	f.close()
 
 test_files = directory_files("test/Russel-maze") # Extraer los archivos del directorio test
